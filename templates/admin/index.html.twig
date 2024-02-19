@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page d'administration - Calculate{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col mt-4">
+            <h2>Liste des utilisateurs</h2>
+            <div class="secondary-bg">  
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Date inscription</th>
+                            <th>Role</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>
+                                {% if 'ROLE_SUPER_ADMIN' in user.roles %}
+                                    <i class="fa-solid fa-star"></i>
+                                {% endif %}
+                                {% if 'ROLE_ADMIN' in user.roles %}
+                                    <i class="fa-solid fa-user-tie"></i>
+                                {% endif %}
+                            </td>
+                            <td>{{ user.lastname }}</td>
+                            <td>{{ user.firstname }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.getCreatedAt()|date('d-m-Y') }}</td>
+                            <td>{{ user.getRoles()|join(', ')|replace({'_':' '})|title }}</td>
+                            <td>
+                            {% if 'ROLE_SUPER_ADMIN' in appUser.roles %}
+                                <a href="{{ path('app_admin_edit',{id:user.id}) }}" class="btn btn-outline-primary"><i class="fa-solid fa-pen"></i></a>
+                            {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil Calculate{% endblock %}
+
+{% block body %}
+    <div class="container my-5 d-flex justify-content-center bg-secondary">
+        <div class="col-md-6">
+            <div class="p-5 text-center bg-dark rounded-3">
+            <img src="{{ asset('img/logo.png') }}" alt="logo Calculate" width="300px">
+            <p class="col-lg-8 mx-auto fs-5 text-white">
+                Calculate est une application de gestion de métrage pour installateur de cuisine.
+            </p>
+            <div class="d-inline-flex gap-2 mb-5">
+                <a href="{{ path('app_login') }}" class="d-flex align-items-center btn btn-primary ms-auto" type="button">
+                    Se connecter
+                    <i class="fa-solid fa-arrow-right ms-2"></i>
+                </a>
+                <a href="{{ path('app_register') }}" class="btn btn-outline-secondary" type="button">
+                    S'enregistrer
+                </a>
+            </div>
+            </div>
+    </div>
+    </div>
+{% endblock %}

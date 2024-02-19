@@ -1,0 +1,17 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #727579;
+    color: $color;
+}
+
+.secondary-bg{
+    background-color: #babcbe;
+}
+
+.btn-primary{
+    background-color: $primary;
+}

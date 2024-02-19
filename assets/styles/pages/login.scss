@@ -1,0 +1,17 @@
+.password-input-container {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.password-input {
+    padding-right: 30px; /* ajustez le décalage pour que l'icône soit visible */
+}
+
+  
