@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Calculer l'angle d'un mur</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="btn submit">Calculer</button>
+    {{ form_end(form) }}
+
+    {% if angle is not null %}
+        <p>L'angle est : {{ angle }} degrés</p>
+    {% endif %}
+
+{% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -40,6 +42,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\ManyToMany(targetEntity: Cuisiniste::class, mappedBy: 'user')]
+    private Collection $cuisinistes;
+
+    public function __construct()
+    {
+        $this->cuisinistes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -155,6 +165,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cuisiniste>
+     */
+    public function getCuisinistes(): Collection
+    {
+        return $this->cuisinistes;
+    }
+
+    public function addCuisiniste(Cuisiniste $cuisiniste): static
+    {
+        if (!$this->cuisinistes->contains($cuisiniste)) {
+            $this->cuisinistes->add($cuisiniste);
+            $cuisiniste->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCuisiniste(Cuisiniste $cuisiniste): static
+    {
+        if ($this->cuisinistes->removeElement($cuisiniste)) {
+            $cuisiniste->removeUser($this);
+        }
 
         return $this;
     }

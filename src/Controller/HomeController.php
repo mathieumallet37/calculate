@@ -12,17 +12,16 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_angle');
+        }
+        return $this->render('home/index.html.twig');
     }
 
-    #[Route('/private', name: 'app_home_private')]
+    #[Route('/calcul', name: 'app_home_calcul')]
     #[IsGranted('ROLE_USER')]
     public function private(): Response
     {
-        return $this->render('home/private.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('home/calcul.html.twig');
     }
 }
