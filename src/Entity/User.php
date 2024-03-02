@@ -46,9 +46,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Cuisiniste::class, mappedBy: 'user')]
     private Collection $cuisinistes;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Metrage::class)]
+    private Collection $metrages;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Client::class)]
+    private Collection $clients;
+
     public function __construct()
     {
         $this->cuisinistes = new ArrayCollection();
+        $this->metrages = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,6 +199,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->cuisinistes->removeElement($cuisiniste)) {
             $cuisiniste->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Metrage>
+     */
+    public function getMetrages(): Collection
+    {
+        return $this->metrages;
+    }
+
+    public function addMetrage(Metrage $metrage): static
+    {
+        if (!$this->metrages->contains($metrage)) {
+            $this->metrages->add($metrage);
+            $metrage->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMetrage(Metrage $metrage): static
+    {
+        if ($this->metrages->removeElement($metrage)) {
+            // set the owning side to null (unless already changed)
+            if ($metrage->getUser() === $this) {
+                $metrage->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Client>
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): static
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients->add($client);
+            $client->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): static
+    {
+        if ($this->clients->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getUser() === $this) {
+                $client->setUser(null);
+            }
         }
 
         return $this;

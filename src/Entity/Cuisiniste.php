@@ -33,9 +33,13 @@ class Cuisiniste
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'cuisinistes')]
     private Collection $user;
 
+    #[ORM\OneToMany(mappedBy: 'cuisiniste', targetEntity: Metrage::class)]
+    private Collection $metrages;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->metrages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,6 +127,36 @@ class Cuisiniste
     public function removeUser(User $user): static
     {
         $this->user->removeElement($user);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Metrage>
+     */
+    public function getMetrages(): Collection
+    {
+        return $this->metrages;
+    }
+
+    public function addMetrage(Metrage $metrage): static
+    {
+        if (!$this->metrages->contains($metrage)) {
+            $this->metrages->add($metrage);
+            $metrage->setCuisiniste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMetrage(Metrage $metrage): static
+    {
+        if ($this->metrages->removeElement($metrage)) {
+            // set the owning side to null (unless already changed)
+            if ($metrage->getCuisiniste() === $this) {
+                $metrage->setCuisiniste(null);
+            }
+        }
 
         return $this;
     }
